@@ -1,0 +1,79 @@
+﻿@using MovieWebApplication.Models
+@model HomeViewModel
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    ViewData["Title"] = "Home Page";
+
+    var numberOfPages = 0.0;
+    var displayPrevButton = false;
+    var displayNextButton = false;
+    var nextPageIndex = 0;
+    var prevPageIndex = 0;
+    if (Model?.ResponseModel?.totalResults != null)
+    {
+        var totalResultsInt = double.Parse(Model.ResponseModel.totalResults);
+        double numberOfPagesDouble = totalResultsInt / 10;
+        numberOfPages = Math.Ceiling(numberOfPagesDouble);
+
+        var pageIndex = int.Parse(Model.PageIndex);
+        displayPrevButton = 1 < pageIndex;
+        displayNextButton = numberOfPages > pageIndex;
+
+        nextPageIndex = pageIndex + 1;
+        prevPageIndex = pageIndex - 1;
+    }
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <form action="/Home/SearchTitle" method="post">
+        <div>
+            <label for="title">MOVIE TITLE</label>
+        </div>
+        <div>
+            <input id="title" name="title" type="text" data-title="@Model?.MovieTitle" value="@Model?.MovieTitle" />
+        </div>
+        <button type="submit">Search</button>
+    </form>
+    @if (Model?.ResponseModel?.totalResults != null)
+    {
+        <div class="search-result-div">
+            <p class="search-result-paragraph"><b>Number of search results: </b>@Model.ResponseModel.totalResults</p>
+        </div>
+    }
+    @if (Model?.ResponseModel?.Search != null && Model.ResponseModel.Search.Any())
+    {
+        <table>
+            @foreach (var movie in Model.ResponseModel.Search)
+            {
+                <tr>
+                    <td class="image-spec-column">
+                        <ul class="image-spec-ul">
+                            <li><b>Title: </b>@movie.Title</li>
+                            <li><b>Year: </b>@movie.Year</li>
+                            <li><b>Type: </b>@movie.Type</li>
+                        </ul>
+                    </td>
+                    <td><img src="@movie.Poster" alt="@movie.Title image text" class="poster-img" /></td>
+                </tr>
+            }
+        </table>
+    }
+
+    @if (displayPrevButton)
+    {
+        <form action="/Home/SearchTitle" method="post" class="pagination-button-form">
+            <input type="hidden" value="@prevPageIndex" name="pageindex" data-pageindex="@prevPageIndex" />
+            <input type="hidden" value="@Model?.MovieTitle" name="title" data-title="@Model?.MovieTitle" />
+            <button type="submit">Previous</button>
+        </form>
+    }
+    @if (displayNextButton)
+    {
+        <form action="/Home/SearchTitle" method="post" class="pagination-button-form">
+            <input type="hidden" value="@nextPageIndex" name="pageindex" data-pageindex="@nextPageIndex" />
+            <input type="hidden" value="@Model?.MovieTitle" name="title" data-title="@Model?.MovieTitle" />
+            <button type="submit">Next</button>
+        </form>
+    }
+</div>
