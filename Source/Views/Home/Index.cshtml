@@ -11,8 +11,8 @@
     var prevPageIndex = 0;
     if (Model?.ResponseModel?.totalResults != null)
     {
-        var totalResultsInt = double.Parse(Model.ResponseModel.totalResults);
-        double numberOfPagesDouble = totalResultsInt / 10;
+        var totalResultsDouble = double.Parse(Model.ResponseModel.totalResults);
+        double numberOfPagesDouble = totalResultsDouble / 10;
         numberOfPages = Math.Ceiling(numberOfPagesDouble);
 
         var pageIndex = int.Parse(Model.PageIndex);
