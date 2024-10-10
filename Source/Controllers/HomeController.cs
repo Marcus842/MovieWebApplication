@@ -33,6 +33,11 @@ namespace MovieWebApplication.Controllers
                 }
                 responseModel = await _movieService.GetAndDeserializeAsync<OmdbResponseModel>($"&s={title}&page={pageindex}");
 
+                if (responseModel.Response == "False") {
+                    _logger.LogError("Unable to serach for title. Error message: {Message}", responseModel.Error);
+                    return View("Index");
+                }
+
                 var homeViewModel = new HomeViewModel
                 {
                     ResponseModel = responseModel,
