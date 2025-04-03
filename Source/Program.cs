@@ -9,7 +9,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.Configure<OmdbApiConfiguration>(
     builder.Configuration.GetSection("OmdbAPI"));
 
-builder.Services.AddScoped<IMovieService, OmdbMovieService>();
+builder.Services.AddHttpClient<IMovieService, OmdbMovieService>();
 
 var app = builder.Build();
 

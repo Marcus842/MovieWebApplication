@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using MovieWebApplication.Models;
 using MovieWebApplication.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MovieWebApplication.Controllers
 {
@@ -10,7 +11,7 @@ namespace MovieWebApplication.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IMovieService _movieService;
 
-        public OmdbResponseModel responseModel { get; set; }
+        public OmdbResponseModel _responseModel;
         public HomeController(ILogger<HomeController> logger, IMovieService movieService)
         {
             _movieService = movieService;
@@ -31,16 +32,17 @@ namespace MovieWebApplication.Controllers
                 {
                     pageindex = "1";
                 }
-                responseModel = await _movieService.GetAndDeserializeAsync<OmdbResponseModel>($"&s={title}&page={pageindex}");
+                _responseModel = await _movieService.GetAndDeserializeAsync<OmdbResponseModel>($"&s={title}&page={pageindex}");
 
-                if (responseModel.Response == "False") {
-                    _logger.LogError("Unable to serach for title. Error message: {Message}", responseModel.Error);
-                    return View("Index");
+                if (_responseModel.Response == "False")
+                {
+                    _logger.LogError("Unable to serach for title. Error message: {Message}", _responseModel.Error);
+                    return ShowErrorView("Error", _responseModel.Error);
                 }
 
                 var homeViewModel = new HomeViewModel
                 {
-                    ResponseModel = responseModel,
+                    ResponseModel = _responseModel,
                     PageIndex = pageindex,
                     MovieTitle = title
                 };
@@ -49,8 +51,19 @@ namespace MovieWebApplication.Controllers
             catch (Exception ex)
             {
                 _logger.LogError("Unable to serach for title. Error message: {Message} Stack trace: {StackTrace}", ex.Message, ex.StackTrace);
-                return View("Index");
+                return ShowErrorView("Error", ex.Message, ex.StackTrace);
             }
+        }
+
+        private IActionResult ShowErrorView(string title, string? message, string? stacktrace = null)
+        {
+            var viewModel = new ErrorViewModel
+            {
+                Title = title,
+                Message = message,
+                StackTrace = stacktrace
+            };
+            return RedirectToAction("Index", "Error", viewModel);
         }
     }
 }

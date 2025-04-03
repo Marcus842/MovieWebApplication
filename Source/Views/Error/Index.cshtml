@@ -1,0 +1,21 @@
+﻿@using MovieWebApplication.Models
+@model ErrorViewModel
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    ViewData["Title"] = "Error";
+
+    var errorTitle = Model.Title ?? "General Error";
+}
+<div class="text-center">
+    <h1 class="display-1 text-danger">@errorTitle</h1>
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <strong class="display-4 text-danger">@Model.Message</strong>
+    }
+    @if (!string.IsNullOrEmpty(Model.StackTrace))
+    {
+        <environment include="Development">
+            <p class="text-dark">@Model.StackTrace</p>
+        </environment>
+    }
+</div>

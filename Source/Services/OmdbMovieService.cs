@@ -11,13 +11,13 @@ namespace MovieWebApplication.Services
         private readonly OmdbApiConfiguration _configuration;
         private readonly ILogger<OmdbMovieService> _logger;
         private readonly string _apiKeyParameter;
-        public OmdbMovieService(IOptions<OmdbApiConfiguration> options, ILogger<OmdbMovieService> logger)
+        public OmdbMovieService(IOptions<OmdbApiConfiguration> options, ILogger<OmdbMovieService> logger, HttpClient httpClient)
         {
             _configuration = options.Value;
             _logger = logger;
             var _apiKey = _configuration.ApiKey;
             _apiKeyParameter = $"?apikey={_apiKey}";
-            _httpClient = new HttpClient();
+            _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://www.omdbapi.com/");
             _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
 
