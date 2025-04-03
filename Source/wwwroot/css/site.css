@@ -27,11 +27,12 @@ button {
 }
 
 .search-result-div {
-    text-align: left;
+    text-align: center;
 }
 
 .search-result-paragraph {
     padding-left: 2rem;
+    padding-top:1rem;
 }
 
 .image-spec-column {
@@ -48,4 +49,8 @@ button {
 
 .pagination-button-form {
     display: inline-block;
+}
+
+.movie-serach-result-table{
+    margin:auto;
 }

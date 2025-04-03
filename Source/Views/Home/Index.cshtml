@@ -43,7 +43,7 @@
     }
     @if (Model?.ResponseModel?.Search != null && Model.ResponseModel.Search.Any())
     {
-        <table>
+        <table class="movie-serach-result-table">
             @foreach (var movie in Model.ResponseModel.Search)
             {
                 <tr>
