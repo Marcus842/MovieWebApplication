@@ -54,3 +54,23 @@ button {
 .movie-serach-result-table{
     margin:auto;
 }
+
+.search-box-div {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 800px; /* Adjust as needed */
+    background-color: white; /* Optional: Add a background to keep it visible */
+    padding: 1rem;
+    z-index: 1000; /* Ensure it stays on top */
+    text-align: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a slight shadow */
+    max-height:260px;
+}
+
+.result-div
+{
+    margin-top:260px;
+}
