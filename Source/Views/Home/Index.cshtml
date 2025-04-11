@@ -29,40 +29,10 @@
         <h1 class="display-4">Welcome</h1>
         <form action="/Home/SearchTitle" method="post">
             <div>
-                <label for="title">MOVIE TITLE</label>
-            </div>
-            <div>
-                <input id="title" name="title" type="text" data-title="@Model?.MovieTitle" value="@Model?.MovieTitle" />
+                <input id="title" name="title" type="text" data-title="@Model?.MovieTitle" value="@Model?.MovieTitle" placeholder="Movie title" />
             </div>
             <button type="submit">Search</button>
         </form>
-        @if (Model?.ResponseModel?.totalResults != null)
-        {
-            <div class="search-result-div">
-                <p class="search-result-paragraph"><b>Number of search results: </b>@Model.ResponseModel.totalResults</p>
-            </div>
-        }
-    </div>
-    <div class="result-div">
-        @if (Model?.ResponseModel?.Search != null && Model.ResponseModel.Search.Any())
-        {
-            <table class="movie-serach-result-table">
-                @foreach (var movie in Model.ResponseModel.Search)
-                {
-                    <tr>
-                        <td class="image-spec-column">
-                            <ul class="image-spec-ul">
-                                <li><b>Title: </b>@movie.Title</li>
-                                <li><b>Year: </b>@movie.Year</li>
-                                <li><b>Type: </b>@movie.Type</li>
-                            </ul>
-                        </td>
-                        <td><img src="@movie.Poster" alt="@movie.Title image text" class="poster-img" /></td>
-                    </tr>
-                }
-            </table>
-        }
-
         @if (displayPrevButton)
         {
             <form action="/Home/SearchTitle" method="post" class="pagination-button-form">
@@ -78,6 +48,31 @@
                 <input type="hidden" value="@Model?.MovieTitle" name="title" data-title="@Model?.MovieTitle" />
                 <button type="submit">Next</button>
             </form>
+        }
+        @if (Model?.ResponseModel?.totalResults != null)
+        {
+            <div class="search-result-div">
+                <p class="search-result-paragraph"><b>Number of search results: </b>@Model.ResponseModel.totalResults</p>
+            </div>
+        }
+    </div>
+    <div class="result-div">
+        @if (Model?.ResponseModel?.Search != null && Model.ResponseModel.Search.Any())
+        {
+            @foreach (var movie in Model.ResponseModel.Search)
+            {
+                <div class="movie-card">
+                    @if (!string.IsNullOrEmpty(movie.Poster) && movie.Poster != "N/A")
+                    {
+                        <img src="@movie.Poster" alt="@movie.Title image text" class="poster-image" />
+                    }
+                    <ul class="image-spec-ul">
+                        <li><b>Title: </b>@movie.Title</li>
+                        <li><b>Year: </b>@movie.Year</li>
+                        <li><b>Type: </b>@movie.Type</li>
+                    </ul>
+                </div>
+                }
         }
     </div>
 </div>
